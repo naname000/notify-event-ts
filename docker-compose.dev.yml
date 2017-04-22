@@ -1,0 +1,7 @@
+notify-event-ts:
+  build: .
+#  ports:
+#    - '3000:3000'
+  volumes:
+    - .:/home/app/net
+    - /home/app/net/node_modules
