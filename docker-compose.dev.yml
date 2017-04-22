@@ -5,3 +5,7 @@ notify-event-ts:
   volumes:
     - .:/home/app/net
     - /home/app/net/node_modules
+  environment:
+    - TS_SERVERADMIN=serveradmin
+    - TS_PORT=10011
+    - TS_SA_PASSWORD=
