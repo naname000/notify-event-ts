@@ -3,35 +3,48 @@
  */
 'use strict';
 
-console.log(process.env.TS_SA_PASSWORD);
-// return;
-
 const TeamspeakObserver = require('teamspeak-observer');
 const LineAPI = require('line-api');
 
 const notify = new LineAPI.Notify({
-    token: 'eeYj7TJebqyX08jbbW3PMIvG56bC0L7JBsEZ69XX9y9'
+    token: process.env.LINE_TOKEN
 });
 
-const observer = new TeamspeakObserver('127.0.0.1', 10011, 'serveradmin', '');
+setTimeout(function() {
+    console.log('trying to connect ts3 server query console.');
 
-observer.tsquery.sock.setTimeout(1000, function(){
-    console.log('hello');
-    process.exit();
-});
+    const observer = new TeamspeakObserver(
+        'teamspeak3',
+        process.env.TS_PORT,
+        process.env.TS_SERVERADMIN,
+        process.env.TS_SA_PASSWORD
+    );
+    console.log('instance created');
 
-observer.on(TeamspeakObserver.ONTIMEOUT, function() {
-    console.log('Connection failed. Timed out.');
-});
-observer.on(TeamspeakObserver.ONCONNECTED, () => {
-  console.log('connected');
-  observer.login();
-});
-observer.on(TeamspeakObserver.ONCLIENTENTERVIEW, (data) => {
-    notify.send({
-        message: data.client_nickname + 'さんがログインしました。'
+// observer.tsquery.sock.setTimeout(1000, function(){
+//     console.log('Connection failed. Timed out.');
+//     process.exit();
+// });
+// observer.tsquery.sock.setTimeout(3);
+
+    observer.on(TeamspeakObserver.ONTIMEOUT, function() {
+        console.log('Connection failed. Timed out.');
+        process.exit();
     });
-});
 
+    observer.on(TeamspeakObserver.ONCONNECTED, () => {
+        console.log('connected');
+        observer.login();
+    });
+
+    observer.on(TeamspeakObserver.ONCLIENTENTERVIEW, (data) => {
+        console.log('connection detected');
+        notify.send({
+            message: data.client_nickname + 'さんがログインしました。'
+        });
+    });
+
+    console.log('ends');
 // TODO パスワード、トークン類の外だし
 // TODO 無通信によるタイムアウトの検証。必要があればKeepAliveの実装。
+}, 10000);

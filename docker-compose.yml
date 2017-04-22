@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+
+  teamspeak3:
+    image: aheil/teamspeak3-server
+    ports:
+     - 9987:9987/udp
+#     - 10011:10011
+     - 30033:30033
+
+  notify-event-ts:
+    build: .
+    depends_on:
+     - teamspeak3
+    restart: always
+    volumes:
+      - .:/home/app/net
+      - /home/app/net/node_modules
+    environment:
+      - LINE_TOKEN=CHANGE_ME
+      - TS_SERVERADMIN=serveradmin
+      - TS_PORT=10011
+      - TS_SA_PASSWORD=COPY_FROM_DOCKER_LOG

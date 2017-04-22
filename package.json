@@ -15,6 +15,6 @@
   },
   "dependencies": {
     "line-api": "^0.1.4",
-    "teamspeak-observer": "github:naname000/teamspeak-observer"
+    "teamspeak-observer": "github:naname000/teamspeak-observer#feature/settable-timeout"
   }
 }
