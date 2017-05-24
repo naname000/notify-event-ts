@@ -4,6 +4,8 @@ services:
 
   teamspeak3:
     image: aheil/teamspeak3-server
+    volumes:
+     - .:/data
     ports:
      - 9987:9987/udp
 #     - 10011:10011
